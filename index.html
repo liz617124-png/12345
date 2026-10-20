@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>熱蘭遮城到安平古堡 - 穿越四百年的歷史探索</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter & Noto Serif TC -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Noto+Serif+TC:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <!-- Anime.js for smooth exhibition transitions -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brick: {
+                            50: '#fdf3f2',
+                            100: '#fbe4e1',
+                            500: '#d95338',
+                            700: '#a3331d',
+                            800: '#832513',
+                            900: '#621a0d',
+                            950: '#380c05',
+                        },
+                        amberWood: '#8c5a3c',
+                    },
+                    fontFamily: {
+                        serif: ['"Noto Serif TC"', 'serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .clip-before { clip-path: inset(0 0 0 0); }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #111827;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d95338;
+            border-radius: 4px;
+        }
+        .bg-pattern {
+            background-color: #faf7f2;
+            background-image: radial-gradient(#d95338 0.5px, transparent 0.5px), radial-gradient(#d95338 0.5px, #faf7f2 0.5px);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+        }
+        /* Custom animation pulses */
+        @keyframes subtle-zoom {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .animate-subtle-zoom {
+            animation: subtle-zoom 25s ease-in-out infinite;
+        }
+
+        /* Exhibition intro animation element classes */
+        .exhibition-map, .exhibition-photo, .exhibition-badge, .exhibition-title, .exhibition-subtitle, .exhibition-actions {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+    </style>
+</head>
+<body class="bg-[#fcfaf7] text-gray-800 font-sans antialiased flex flex-col min-h-screen selection:bg-brick-500 selection:text-white">
+
+    <!-- Navigation Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-gray-950/70 backdrop-blur-md border-b border-white/10 text-white transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center gap-3.5 cursor-pointer group" onclick="switchTab('home')">
+                    <div class="w-11 h-11 rounded-xl bg-brick-500 text-white flex items-center justify-center font-bold font-serif text-2xl shadow-lg group-hover:scale-105 transition-transform">
+                        熱
+                    </div>
+                    <div>
+                        <span class="font-serif text-xl sm:text-2xl font-black tracking-wider text-white flex items-center gap-2">
+                            熱蘭遮城 <span class="text-brick-500 font-sans text-sm font-light">✕</span> 安平古堡
+                        </span>
+                        <span class="block text-[10px] sm:text-xs text-amber-200/70 tracking-[0.2em] uppercase font-mono">Fort Zeelandia • 1624–2026</span>
+                    </div>
+                </div>
+                <!-- Navigation Tabs -->
+                <nav class="hidden md:flex items-center space-x-1 lg:space-x-2">
+                    <button onclick="switchTab('home')" id="nav-home" class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all flex items-center gap-2 text-white bg-brick-500 shadow-md">
+                        <i class="fa-solid fa-house text-xs"></i> 首頁
+                    </button>
+                    <button onclick="switchTab('timeline')" id="nav-timeline" class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all flex items-center gap-2 text-gray-300 hover:text-white hover:bg-white/10">
+                        <i class="fa-solid fa-clock-rotate-left text-xs"></i> 年代
+                    </button>
+                    <button onclick="switchTab('map')" id="nav-map" class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all flex items-center gap-2 text-gray-300 hover:text-white hover:bg-white/10">
+                        <i class="fa-solid fa-map-location-dot text-xs"></i> 地圖
+                    </button>
+                    <button onclick="switchTab('figures')" id="nav-figures" class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all flex items-center gap-2 text-gray-300 hover:text-white hover:bg-white/10">
+                        <i class="fa-solid fa-users text-xs"></i> 人物
+                    </button>
+                    <button onclick="switchTab('stories')" id="nav-stories" class="nav-btn px-4 py-2 rounded-xl text-sm font-semibold transition-all flex items-center gap-2 text-gray-300 hover:text-white hover:bg-white/10">
+                        <i class="fa-solid fa-book-open text-xs"></i> 故事與傳說
+                    </button>
+                </nav>
+                <!-- Mobile Navigation Toggle -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="text-white hover:text-brick-500 p-2 rounded-lg">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-gray-950/95 backdrop-blur-xl border-b border-white/10 px-4 pt-2 pb-6 space-y-2 shadow-2xl">
+            <button onclick="switchTab('home'); toggleMobileMenu();" class="w-full text-left px-4 py-3 rounded-xl text-base font-semibold text-white bg-brick-500 flex items-center gap-3">
+                <i class="fa-solid fa-house w-5"></i> 首頁
+            </button>
+            <button onclick="switchTab('timeline'); toggleMobileMenu();" class="w-full text-left px-4 py-3 rounded-xl text-base font-semibold text-gray-300 hover:bg-white/10 flex items-center gap-3">
+                <i class="fa-solid fa-clock-rotate-left w-5"></i> 年代時間軸
+            </button>
+            <button onclick="switchTab('map'); toggleMobileMenu();" class="w-full text-left px-4 py-3 rounded-xl text-base font-semibold text-gray-300 hover:bg-white/10 flex items-center gap-3">
+                <i class="fa-solid fa-map-location-dot w-5"></i> 空間地圖導覽
+            </button>
+            <button onclick="switchTab('figures'); toggleMobileMenu();" class="w-full text-left px-4 py-3 rounded-xl text-base font-semibold text-gray-300 hover:bg-white/10 flex items-center gap-3">
+                <i class="fa-solid fa-users w-5"></i> 歷史身影
+            </button>
+            <button onclick="switchTab('stories'); toggleMobileMenu();" class="w-full text-left px-4 py-3 rounded-xl text-base font-semibold text-gray-300 hover:bg-white/10 flex items-center gap-3">
+                <i class="fa-solid fa-book-open w-5"></i> 故事與傳說
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow pt-20">
+
+        <!-- SECTION: HOME -->
+        <section id="sec-home" class="tab-section block">
+            <!-- Full-Bleed Atmospheric Hero Banner with Exhibition Opening Animation -->
+            <div class="relative w-full min-h-[92vh] flex items-center justify-center bg-gray-950 overflow-hidden pt-12 pb-20">
+                
+                <!-- Layer 1: Atmospheric Background Image -->
+                <div class="absolute inset-0 z-0 overflow-hidden">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/212%E5%AE%89%E5%B9%B3%E5%8F%A4%E5%A0%A1%E7%85%A7%E7%89%87_016.jpg/1280px-212%E5%AE%89%E5%B9%B3%E5%8F%A4%E5%A0%A1%E7%85%A7%E7%89%87_016.jpg" 
+                         onerror="this.src='https://placehold.co/1920x1080/380c05/ffffff?text=Anping+Fort+Heritage'" 
+                         alt="安平古堡全景" 
+                         class="w-full h-full object-cover object-center animate-subtle-zoom filter brightness-[0.45] contrast-[1.1] opacity-80"/>
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#fcfaf7] via-gray-950/70 to-gray-950/85"></div>
+                    <div class="absolute inset-0 bg-gradient-to-r from-gray-950/90 via-transparent to-gray-950/90"></div>
+                </div>
+
+                <!-- Layer 2: Floating Exhibition Artifact Elements (Old Map & Old Photo) -->
+                <!-- Floating 17th-century Map Fragment (Top Left / Background Accent) -->
+                <div class="exhibition-map absolute -left-10 lg:left-8 top-16 md:top-24 w-52 md:w-80 rounded-2xl overflow-hidden shadow-2xl border border-amber-200/30 opacity-0 rotate-[-4deg] pointer-events-none z-0 filter sepia-[0.3] brightness-90 hidden sm:block">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/%E5%8F%B0%E7%81%A3%E5%9F%8E%E6%AE%98%E8%B9%9F%EF%BC%88%E5%AE%89%E5%B9%B3%E5%8F%A4%E5%A0%A1%E6%AE%98%E8%B9%9F%EF%BC%8）-3.jpg/1280px-%E5%8F%B0%E7%81%A3%E5%9F%8E%E6%AE%98%E8%B9%9F%EF%BC%88%E5%AE%89%E5%B9%B3%E5%8F%A4%E5%A0%A1%E6%AE%98%E8%B9%9F%EF%BC%8）-3.jpg" 
+                         onerror="this.src='https://placehold.co/400x300/621a0d/ffffff?text=Old+Zeelandia+Map'" 
+                         alt="十七世紀大員古地圖" class="w-full h-auto object-cover"/>
+                    <div class="bg-gray-950/80 backdrop-blur-md p-2 text-[10px] text-amber-200 font-mono text-center border-t border-amber-200/20">
+                        🗺️ 1624年熱蘭遮城測繪復原圖版
+                    </div>
+                </div>
+
+                <!-- Floating Vintage Photo Card (Bottom Right Accent) -->
+                <div class="exhibition-photo absolute -right-10 lg:right-12 bottom-20 md:bottom-28 w-48 md:w-72 rounded-2xl overflow-hidden shadow-2xl border border-white/20 opacity-0 rotate-[5deg] pointer-events-none z-0 filter contrast-105 hidden sm:block">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/212%E5%AE%89%E5%B9%B3%E5%8F%A4%E5%A0%A1%E7%85%A7%E7%89%87_016.jpg/1280px-212%E5%AE%89%E5%B9%B3%E5%8F%A4%E5%A0%A1%E7%85%A7%E7%89%87_016.jpg" 
+                         onerror="this.src='https://placehold.co/400x300/380c05/ffffff?text=Anping+Fort+Archives'" 
+                         alt="安平古堡歷史老照片" class="w-full h-auto object-cover"/>
+                    <div class="bg-gray-950/80 backdrop-blur-md p-2 text-[10px] text-amber-200 font-mono text-center border-t border-white/20">
+                        📸 20世紀古堡瞭望台經典映像
+                    </div>
+                </div>
+
+                <!-- Layer 3: Hero Content Display -->
+                <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white mt-8">
+                    <!-- Badge -->
+                    <div class="exhibition-badge inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md rounded-full border border-white/20 text-xs sm:text-sm text-amber-200 font-medium mb-8 shadow-xl opacity-0">
+                        <span class="w-2 h-2 rounded-full bg-brick-500 animate-ping"></span>
+                        🏛️ 臺灣與世界交會的起點 • 四百年時空對焦
+                    </div>
+
+                    <!-- Main Exhibition Title -->
+                    <h1 class="exhibition-title font-serif text-4xl sm:text-6xl lg:text-7xl font-black tracking-wide leading-tight mb-8 drop-shadow-2xl text-balance opacity-0">
+                        穿越四百年歲月<br class="hidden sm:inline"/>
+                        <span class="bg-clip-text text-transparent bg-gradient-to-r from-amber-200 via-brick-100 to-amber-400">
+                            窺見熱蘭遮城的歷史脈動
+                        </span>
+                    </h1>
+
+                    <!-- Story Description Line -->
+                    <p class="exhibition-subtitle max-w-3xl mx-auto text-gray-200 text-base sm:text-xl lg:text-2xl font-light leading-relaxed mb-10 text-shadow-md drop-shadow opacity-0">
+                        從 1624 年大航海時代的荷蘭「熱蘭遮城」，到今日的安平地標。這裡經歷了殖民貿易、明鄭王城、清領荒毀與近代變遷，誠邀您一同踏上時光旅程。
+                    </p>
+
+                    <!-- Primary Action Buttons -->
+                    <div class="exhibition-actions flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 mb-12 opacity-0">
+                        <button onclick="switchTab('timeline')" class="w-full sm:w-auto px-8 py-4 bg-brick-500 hover:bg-brick-700 text-white text-lg font-bold rounded-2xl shadow-2xl hover:shadow-brick-500/50 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-3 border border-brick-500/50">
+                            <i class="fa-solid fa-compass text-xl"></i> 開啟時空導覽
+                        </button>
+                        <button onclick="switchTab('map')" class="w-full sm:w-auto px-8 py-4 bg-white/15 hover:bg-white/25 text-white text-lg font-semibold backdrop-blur-md rounded-2xl shadow-xl border border-white/30 hover:border-white hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-3">
+                            <i class="fa-solid fa-map-location-dot text-xl text-amber-300"></i> 探索雙重地圖
+                        </button>
+                    </div>
+
+                    <!-- Scroll Down Indicator Feature -->
+                    <div class="flex flex-col items-center gap-2 opacity-80 hover:opacity-100 transition-opacity cursor-pointer" onclick="scrollToSection('explore-cards')">
+                        <span class="text-xs uppercase tracking-widest text-amber-200 font-mono">探索四大主題單元</span>
+                        <div class="w-8 h-12 rounded-full border-2 border-amber-200/40 flex items-start justify-center p-1.5">
+                            <div class="w-1.5 h-3 bg-brick-500 rounded-full animate-bounce"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Visual Showcase Container -->
+            <div id="explore-cards" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 -mt-10 relative z-20">
+                
+                <!-- Dual Layer Historic Comparison Box Card -->
+                <div class="bg-gray-900 rounded-3xl p-6 sm:p-10 shadow-2xl border border-amber-900/30 mb-20 text-white">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                        <div class="lg:col-span-5 space-y-4">
+                            <span class="text-brick-500 font-bold text-xs sm:text-sm tracking-widest uppercase font-mono">Visual Comparison</span>
+                            <h2 class="font-serif text-2xl sm:text-4xl font-bold leading-snug">
+                                17 世紀古堡<br/>與 21 世紀地標重疊
+                            </h2>
+                            <p class="text-gray-300 text-sm sm:text-base leading-relaxed">
+                                滑動中間的指引條，親手比對 1624 年荷蘭東印度公司築城繪圖與今日安平古堡地標瞭望台的時空變化。
+                            </p>
+                            <div class="pt-2 flex items-center gap-4 text-xs text-amber-200/80">
+                                <span class="flex items-center gap-1.5"><i class="fa-solid fa-circle text-brick-500 text-[8px]"></i> 荷蘭紅磚殘壁</span>
+                                <span class="flex items-center gap-1.5"><i class="fa-solid fa-circle text-amber-400 text-[8px]"></i> 1975年尖頂瞭望台</span>
+                            </div>
+                        </div>
+
+                        <!-- Before & After Image Visual Comparison Interactive Box -->
+                        <div class="lg:col-span-7 relative rounded-2xl overflow-hidden shadow-2xl border-2 border-white/10 select-none">
+                            <div id="image-comparison" class="relative w-full h-[320px] sm:h-[420px]">
+                                <!-- After Image (Modern) -->
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/212%E5%AE%89%E5%B9%B3%E5%8F%A4%E5%A0%A1%E7%85%A7%E7%89%87_016.jpg/1280px-212%E5%AE%89%E5%B9%B3%E5%8F%A4%E5%A0%A1%E7%85%A7%E7%89%87_016.jpg" 
+                                     onerror="this.src='https://placehold.co/800x600/a3331d/ffffff?text=Modern+Anping+Fort'" 
+                                     alt="現代安平古堡瞭望台" 
+                                     class="absolute inset-0 w-full h-full object-cover"/>
+                                <div class="absolute bottom-4 right-4 bg-black/70 backdrop-blur-md text-white text-xs px-3.5 py-2 rounded-lg font-semibold border border-white/20">
+                                    現代：安平古堡瞭望台
+                                </div>
+
+                                <!-- Before Image Overlay (Historic Concept / Reconstruction) -->
+                                <div id="before-image-wrap" class="absolute inset-0 w-1/2 overflow-hidden border-r-2 border-amber-400 shadow-2xl">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/%E5%8F%B0%E7%81%A3%E5%9F%8E%E6%AE%98%E8%B9%9F%EF%BC%88%E5%AE%89%E5%B9%B3%E5%8F%A4%E5%A0%A1%E6%AE%98%E8%B9%9F%EF%BC%89-3.jpg/1280px-%E5%8F%B0%E7%81%A3%E5%9F%8E%E6%AE%98%E8%B9%9F%EF%BC%88%E5%AE%89%E5%B9%B3%E5%8F%A4%E5%A0%A1%E6%AE%98%E8%B9%9F%EF%BC%8）-3.jpg" 
+                                         onerror="this.src='https://placehold.co/800x600/621a0d/ffffff?text=1624+Fort+Zeelandia+Wall'" 
+                                         alt="安平古堡荷蘭紅磚殘壁" 
+                                         class="absolute inset-0 w-full h-full object-cover min-w-full max-w-none"/>
+                                    <div class="absolute bottom-4 left-4 bg-brick-900/90 backdrop-blur-md text-white text-xs px-3.5 py-2 rounded-lg font-semibold border border-brick-500/40">
+                                        古蹟：臺灣城殘壁與古榕樹
+                                    </div>
+                                </div>
+
+                                <!-- Slider Handle -->
+                                <input type="range" min="0" max="100" value="50" id="comparison-slider" oninput="updateComparison(this.value)" class="absolute inset-0 opacity-0 w-full h-full cursor-ew-resize z-20">
+                                <div id="slider-line" class="absolute top-0 bottom-0 left-1/2 w-1 bg-amber-400 pointer-events-none transform -translate-x-1/2 shadow-[0_0_15px_rgba(251,191,36,0.8)] z-10">
+                                    <div class="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-10 h-10 bg-amber-400 text-brick-950 rounded-full flex items-center justify-center shadow-xl font-bold text-sm border-2 border-white">
+                                        <i class="fa-solid fa-arrows-left-right"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-gray-950 p-3 text-center text-xs text-amber-100/70 border-t border-white/10 font-mono">
+                                👈 左右拖曳指引條 比對歷史復原圖與現代樣貌 👉
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Four Entrance Cards Grid Section -->
+                <div class="text-center mb-12">
+                    <span class="text-brick-700 font-extrabold text-xs tracking-widest uppercase font-mono bg-brick-50 px-3 py-1 rounded-full border border-brick-200 inline-block mb-3">Explore Entrance</span>
+                    <h2 class="font-serif text-3xl sm:text-4xl font-black text-gray-900">四大探索單元入口</h2>
+                    <p class="text-gray-600 mt-2 text-sm sm:text-base">點擊任一主題，展開多維度的歷史古堡微旅行</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Card 1 -->
+                    <div onclick="switchTab('timeline')" class="bg-white rounded-3xl p-7 shadow-lg border border-gray-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 cursor-pointer group flex flex-col justify-between">
+                        <div>
+                            <div class="w-16 h-16 rounded-2xl bg-amber-100 text-amber-800 flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform shadow-inner">
+                                ⏳
+                            </div>
+                            <h3 class="font-serif text-xl font-bold text-gray-900 mb-2 group-hover:text-brick-700 transition-colors">時間之流</h3>
+                            <p class="text-gray-600 text-sm leading-relaxed mb-6">
+                                從荷蘭建城、明鄭王城、清領荒廢到日治與當代重修，順著時光軸閱讀四百年歷史變遷。
+                            </p>
+                        </div>
+                        <span class="text-brick-700 font-bold text-sm flex items-center gap-2 group-hover:translate-x-1.5 transition-transform pt-4 border-t border-gray-100">
+                            瀏覽時間軸 <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </span>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div onclick="switchTab('map')" class="bg-white rounded-3xl p-7 shadow-lg border border-gray-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 cursor-pointer group flex flex-col justify-between">
+                        <div>
+                            <div class="w-16 h-16 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform shadow-inner">
+                                🗺️
+                            </div>
+                            <h3 class="font-serif text-xl font-bold text-gray-900 mb-2 group-hover:text-brick-700 transition-colors">空間地圖</h3>
+                            <p class="text-gray-600 text-sm leading-relaxed mb-6">
+                                互動式疊加 17 世紀熱蘭遮城防禦體系與 21 世紀安平古堡重點遺跡（糯米牆、瞭望台）。
+                            </p>
+                        </div>
+                        <span class="text-brick-700 font-bold text-sm flex items-center gap-2 group-hover:translate-x-1.5 transition-transform pt-4 border-t border-gray-100">
+                            導覽互動地圖 <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </span>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div onclick="switchTab('figures')" class="bg-white rounded-3xl p-7 shadow-lg border border-gray-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 cursor-pointer group flex flex-col justify-between">
+                        <div>
+                            <div class="w-16 h-16 rounded-2xl bg-blue-100 text-blue-800 flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform shadow-inner">
+                                👤
+                            </div>
+                            <h3 class="font-serif text-xl font-bold text-gray-900 mb-2 group-hover:text-brick-700 transition-colors">歷史身影</h3>
+                            <p class="text-gray-600 text-sm leading-relaxed mb-6">
+                                宋克長官、末代長官奎一、鄭成功與近代考古學者，認識改變這座城堡命運的關鍵人物。
+                            </p>
+                        </div>
+                        <span class="text-brick-700 font-bold text-sm flex items-center gap-2 group-hover:translate-x-1.5 transition-transform pt-4 border-t border-gray-100">
+                            認識關鍵人物 <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </span>
+                    </div>
+
+                    <!-- Card 4 -->
+                    <div onclick="switchTab('stories')" class="bg-white rounded-3xl p-7 shadow-lg border border-gray-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 cursor-pointer group flex flex-col justify-between">
+                        <div>
+                            <div class="w-16 h-16 rounded-2xl bg-rose-100 text-rose-800 flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform shadow-inner">
+                                📖
+                            </div>
+                            <h3 class="font-serif text-xl font-bold text-gray-900 mb-2 group-hover:text-brick-700 transition-colors">古堡傳奇</h3>
+                            <p class="text-gray-600 text-sm leading-relaxed mb-6">
+                                解密圍城對決、海底通道傳說真實性、糯米烏鬼灰工法與安平追想曲的文學情感。
+                            </p>
+                        </div>
+                        <span class="text-brick-700 font-bold text-sm flex items-center gap-2 group-hover:translate-x-1.5 transition-transform pt-4 border-t border-gray-100">
+                            閱讀傳奇故事 <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: TIMELINE -->
+        <section id="sec-timeline" class="tab-section hidden min-h-[80vh]">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div class="text-center mb-12">
+                    <span class="text-brick-700 font-bold tracking-widest text-xs uppercase font-mono bg-brick-50 px-3 py-1 rounded-full border border-brick-200">CHRONOLOGY</span>
+                    <h2 class="font-serif text-3xl sm:text-5xl font-black text-gray-900 mt-2">古堡四百年歷史時間軸</h2>
+                    <p class="text-gray-600 mt-3 text-base">順著時間推進，閱讀安平古堡從貿易要塞到文化地標的轉變</p>
+                </div>
+
+                <!-- Vertical Timeline Container -->
+                <div id="timeline-container" class="relative border-l-2 border-brick-500/30 ml-4 sm:ml-32 space-y-8 my-8">
+                    <!-- Events rendered via JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: MAP -->
+        <section id="sec-map" class="tab-section hidden min-h-[80vh]">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div class="text-center mb-10">
+                    <span class="text-brick-700 font-bold tracking-widest text-xs uppercase font-mono bg-brick-50 px-3 py-1 rounded-full border border-brick-200">SPATIAL MAP & HERITAGE</span>
+                    <h2 class="font-serif text-3xl sm:text-5xl font-black text-gray-900 mt-2">熱蘭遮城與現代安平古堡空間對照</h2>
+                    <p class="text-gray-600 mt-3 text-base">切換不同時空層，探索防禦堡壘與國定古蹟遺跡</p>
+                </div>
+
+                <!-- Map Mode Selector Controls -->
+                <div class="flex justify-center mb-8">
+                    <div class="inline-flex bg-white rounded-2xl p-1.5 shadow-lg border border-gray-200">
+                        <button onclick="setMapTab('modern')" id="btn-map-modern" class="px-6 py-3 rounded-xl text-sm font-bold transition-all bg-brick-700 text-white shadow">
+                            🏰 當代古堡重點遺跡 (21世紀)
+                        </button>
+                        <button onclick="setMapTab('historic')" id="btn-map-historic" class="px-6 py-3 rounded-xl text-sm font-bold transition-all text-gray-600 hover:text-brick-700">
+                            🛡️ 17世紀熱蘭遮城格局
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Interactive Map Display Canvas Area -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+                    <!-- Map Interactive Visual Box -->
+                    <div class="lg:col-span-2 bg-white rounded-3xl shadow-xl border border-gray-200 p-4 relative overflow-hidden">
+                        <!-- Modern Map Interactive Canvas mock -->
+                        <div id="map-view-modern" class="relative w-full h-[400px] sm:h-[500px] bg-amber-50/50 rounded-2xl border border-amber-200/60 overflow-hidden flex items-center justify-center">
+                            <!-- Background Grid Pattern -->
+                            <div class="absolute inset-0 bg-pattern opacity-30"></div>
+                            
+                            <!-- SVG Map Diagram -->
+                            <svg class="w-full h-full absolute inset-0" viewBox="0 0 600 400">
+                                <!-- Outer boundary -->
+                                <rect x="50" y="40" width="500" height="320" rx="20" fill="none" stroke="#d95338" stroke-width="2" stroke-dasharray="6,6"/>
+                                <text x="65" y="65" fill="#a3331d" font-size="12" font-weight="bold">安平古堡園區範圍</text>
+                                
+                                <!-- Historic Wall Fragment (Old Dutch Wall) -->
+                                <path d="M 100 280 L 250 280 L 280 340" stroke="#a3331d" stroke-width="12" fill="none" stroke-linecap="round"/>
+                                
+                                <!-- Central Platform / Tower -->
+                                <rect x="240" y="140" width="160" height="120" rx="10" fill="#fbe4e1" stroke="#d95338" stroke-width="2"/>
+                                <circle cx="320" cy="190" r="25" fill="#a3331d" opacity="0.8"/>
+
+                                <!-- Museum Building -->
+                                <rect x="100" y="100" width="100" height="70" rx="6" fill="#e5e7eb" stroke="#9ca3af" stroke-width="2"/>
+                            </svg>
+
+                            <!-- Interactive Map Pins -->
+                            <!-- Pin 1: Old Brick Wall -->
+                            <div onclick="selectSpot(0)" class="map-pin absolute top-[70%] left-[28%] transform -translate-x-1/2 -translate-y-1/2 cursor-pointer group z-10">
+                                <div class="w-9 h-9 rounded-full bg-brick-700 text-white flex items-center justify-center font-bold shadow-xl group-hover:scale-125 transition-transform border-2 border-white">
+                                    1
+                                </div>
+                                <span class="absolute top-10 left-1/2 -translate-x-1/2 whitespace-nowrap bg-gray-900 text-white text-xs px-2.5 py-1 rounded-md shadow-lg opacity-90">臺灣城殘壁</span>
+                            </div>
+
+                            <!-- Pin 2: Observation Tower -->
+                            <div onclick="selectSpot(1)" class="map-pin absolute top-[48%] left-[53%] transform -translate-x-1/2 -translate-y-1/2 cursor-pointer group z-10">
+                                <div class="w-9 h-9 rounded-full bg-brick-700 text-white flex items-center justify-center font-bold shadow-xl group-hover:scale-125 transition-transform border-2 border-white">
+                                    2
+                                </div>
+                                <span class="absolute top-10 left-1/2 -translate-x-1/2 whitespace-nowrap bg-gray-900 text-white text-xs px-2.5 py-1 rounded-md shadow-lg opacity-90">安平古堡瞭望台</span>
+                            </div>
+
+                            <!-- Pin 3: Zeelandia Museum -->
+                            <div onclick="selectSpot(2)" class="map-pin absolute top-[30%] left-[25%] transform -translate-x-1/2 -translate-y-1/2 cursor-pointer group z-10">
+                                <div class="w-9 h-9 rounded-full bg-brick-700 text-white flex items-center justify-center font-bold shadow-xl group-hover:scale-125 transition-transform border-2 border-white">
+                                    3
+                                </div>
+                                <span class="absolute top-10 left-1/2 -translate-x-1/2 whitespace-nowrap bg-gray-900 text-white text-xs px-2.5 py-1 rounded-md shadow-lg opacity-90">熱蘭遮城博物館</span>
+                            </div>
+                        </div>
+
+                        <!-- Historic Map Interactive View -->
+                        <div id="map-view-historic" class="hidden relative w-full h-[400px] sm:h-[500px] bg-amber-100/40 rounded-2xl border border-amber-300/80 overflow-hidden flex items-center justify-center">
+                            <div class="absolute inset-0 bg-pattern opacity-20"></div>
+                            
+                            <!-- Historic Fort Diagram -->
+                            <svg class="w-full h-full absolute inset-0" viewBox="0 0 600 400">
+                                <!-- Inner Fortress Bastions -->
+                                <polygon points="200,100 320,80 340,200 220,220" fill="#fbe4e1" stroke="#a3331d" stroke-width="3"/>
+                                <!-- Bastion corners -->
+                                <circle cx="200" cy="100" r="15" fill="#d95338"/>
+                                <circle cx="320" cy="80" r="15" fill="#d95338"/>
+                                <circle cx="340" cy="200" r="15" fill="#d95338"/>
+                                <circle cx="220" cy="220" r="15" fill="#d95338"/>
+
+                                <!-- Outer City Area -->
+                                <path d="M 340 120 L 480 140 L 460 300 L 280 280 L 340 200" fill="#fef3c7" stroke="#d97706" stroke-width="2" opacity="0.7"/>
+                                
+                                <text x="230" y="150" fill="#621a0d" font-size="14" font-weight="bold">內城 (Inner Fort)</text>
+                                <text x="370" y="220" fill="#b45309" font-size="14" font-weight="bold">外城 (Outer Fort)</text>
+                            </svg>
+
+                            <div onclick="selectSpot(3)" class="map-pin absolute top-[35%] left-[45%] transform -translate-x-1/2 -translate-y-1/2 cursor-pointer group z-10">
+                                <div class="w-9 h-9 rounded-full bg-amber-800 text-white flex items-center justify-center font-bold shadow-xl group-hover:scale-125 transition-transform border-2 border-white">
+                                    A
+                                </div>
+                                <span class="absolute top-10 left-1/2 -translate-x-1/2 whitespace-nowrap bg-gray-900 text-white text-xs px-2.5 py-1 rounded-md shadow-lg opacity-90">內城三層防禦</span>
+                            </div>
+
+                            <div onclick="selectSpot(4)" class="map-pin absolute top-[55%] left-[68%] transform -translate-x-1/2 -translate-y-1/2 cursor-pointer group z-10">
+                                <div class="w-9 h-9 rounded-full bg-amber-800 text-white flex items-center justify-center font-bold shadow-xl group-hover:scale-125 transition-transform border-2 border-white">
+                                    B
+                                </div>
+                                <span class="absolute top-10 left-1/2 -translate-x-1/2 whitespace-nowrap bg-gray-900 text-white text-xs px-2.5 py-1 rounded-md shadow-lg opacity-90">外城商館與市政廳</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 text-xs text-gray-500 text-center flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-hand-pointer text-brick-500"></i> 點擊地圖上的地標編號，查看景點歷史詳情與特色
+                        </div>
+                    </div>
+
+                    <!-- Spot Details Card -->
+                    <div id="spot-detail-card" class="bg-white rounded-3xl shadow-xl border border-gray-200 p-6 sm:p-8 flex flex-col justify-between h-full min-h-[420px]">
+                        <div>
+                            <span id="spot-badge" class="px-3 py-1 bg-brick-100 text-brick-700 text-xs font-bold rounded-full inline-block mb-4">
+                                國定古蹟
+                            </span>
+                            <h3 id="spot-title" class="font-serif text-2xl font-bold text-gray-900 mb-3">
+                                臺灣城殘壁（外城南牆殘壁）
+                            </h3>
+                            <p id="spot-desc" class="text-gray-600 text-sm leading-relaxed mb-6">
+                                這是真正由荷蘭人在17世紀興建並保留至今的古堡遺跡。城牆採用糯米糖漿、牡蠣殼灰、糯米汁與紅磚砌成（俗稱糯米橋工法）。城牆上老榕樹根盤根錯節，呈現古樸強韌的歷史滄桑感。
+                            </p>
+                            
+                            <div class="space-y-3 bg-amber-50/60 p-4 rounded-2xl border border-amber-200/60">
+                                <div class="text-xs font-bold text-amber-900 uppercase tracking-wider mb-1">建築工法亮點</div>
+                                <div class="flex items-start gap-2 text-xs text-amber-800 font-medium">
+                                    <i class="fa-solid fa-cubes text-brick-500 mt-0.5"></i>
+                                    <span id="spot-highlight-1">荷蘭紅磚 (Batu Batavia) 鋪砌</span>
+                                </div>
+                                <div class="flex items-start gap-2 text-xs text-amber-800 font-medium">
+                                    <i class="fa-solid fa-mortar-pestle text-brick-500 mt-0.5"></i>
+                                    <span id="spot-highlight-2">三合土：烏鬼灰 + 蚵灰 + 糯米糖漿</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-6 border-t border-gray-100 mt-6">
+                            <button onclick="switchTab('stories')" class="w-full py-3 bg-brick-50 hover:bg-brick-100 text-brick-700 font-bold rounded-xl text-sm transition-colors flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-book"></i> 探索相關故事與傳說
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: FIGURES -->
+        <section id="sec-figures" class="tab-section hidden min-h-[80vh]">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div class="text-center mb-12">
+                    <span class="text-brick-700 font-bold tracking-widest text-xs uppercase font-mono bg-brick-50 px-3 py-1 rounded-full border border-brick-200">HISTORICAL FIGURES</span>
+                    <h2 class="font-serif text-3xl sm:text-5xl font-black text-gray-900 mt-2">塑造古堡命運的歷史身影</h2>
+                    <p class="text-gray-600 mt-3 text-base">從荷蘭長官、明鄭領袖到近代考古學家，多維度視角解讀歷史</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8" id="figures-grid">
+                    <!-- Figures Cards rendered dynamically via JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: STORIES & QUIZ -->
+        <section id="sec-stories" class="tab-section hidden min-h-[80vh]">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div class="text-center mb-12">
+                    <span class="text-brick-700 font-bold tracking-widest text-xs uppercase font-mono bg-brick-50 px-3 py-1 rounded-full border border-brick-200">LEGENDS & TALES</span>
+                    <h2 class="font-serif text-3xl sm:text-5xl font-black text-gray-900 mt-2">古堡傳奇與歷史故事</h2>
+                    <p class="text-gray-600 mt-3 text-base">深入考證熱門民間傳說與大航海建築智慧</p>
+                </div>
+
+                <!-- Story Selector Tabs -->
+                <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                    <div class="lg:col-span-1 space-y-3">
+                        <button onclick="showStory(0)" id="story-tab-0" class="story-nav-btn w-full text-left p-4 rounded-2xl border border-brick-500 bg-brick-50 text-brick-900 font-bold flex items-center gap-3 transition-all">
+                            <span class="text-2xl">⚔️</span>
+                            <div>
+                                <div class="text-sm">九個月的對決</div>
+                                <div class="text-xs font-normal text-gray-500">鄭荷熱蘭遮城圍城戰</div>
+                            </div>
+                        </button>
+                        <button onclick="showStory(1)" id="story-tab-1" class="story-nav-btn w-full text-left p-4 rounded-2xl border border-gray-200 hover:border-brick-300 text-gray-700 font-semibold flex items-center gap-3 transition-all">
+                            <span class="text-2xl">🕳️</span>
+                            <div>
+                                <div class="text-sm">地下秘密通道之謎</div>
+                                <div class="text-xs font-normal text-gray-500">直通赤崁樓的傳說真實性</div>
+                            </div>
+                        </button>
+                        <button onclick="showStory(2)" id="story-tab-2" class="story-nav-btn w-full text-left p-4 rounded-2xl border border-gray-200 hover:border-brick-300 text-gray-700 font-semibold flex items-center gap-3 transition-all">
+                            <span class="text-2xl">🧱</span>
+                            <div>
+                                <div class="text-sm">紅磚與糯米建築學</div>
+                                <div class="text-xs font-normal text-gray-500">大航海時代的本土工法</div>
+                            </div>
+                        </button>
+                        <button onclick="showStory(3)" id="story-tab-3" class="story-nav-btn w-full text-left p-4 rounded-2xl border border-gray-200 hover:border-brick-300 text-gray-700 font-semibold flex items-center gap-3 transition-all">
+                            <span class="text-2xl">🎵</span>
+                            <div>
+                                <div class="text-sm">安平追想曲與老樹</div>
+                                <div class="text-xs font-normal text-gray-500">文學與大眾情感記憶</div>
+                            </div>
+                        </button>
+
+                        <!-- Quiz Entry Box -->
+                        <div class="mt-8 p-6 bg-gray-900 text-white rounded-3xl shadow-xl border border-amber-900/30">
+                            <div class="text-lg font-serif font-bold mb-2 text-amber-300">🎯 歷史小小會考</div>
+                            <p class="text-xs text-gray-300 mb-5 leading-relaxed">
+                                測測看你對熱蘭遮城與安平古堡的了解程度，獲得專屬歷史稱號！
+                            </p>
+                            <button onclick="openQuizModal()" class="w-full py-3 bg-brick-500 hover:bg-brick-700 text-white font-bold rounded-xl text-sm transition-all shadow-lg hover:scale-105">
+                                開始挑戰測驗
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Story Content Display -->
+                    <div class="lg:col-span-3 bg-white rounded-3xl p-6 sm:p-10 shadow-xl border border-gray-200">
+                        <div id="story-content-area">
+                            <!-- Story Content inserted by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Interactive History Quiz Modal Window -->
+    <div id="quiz-modal" class="fixed inset-0 bg-black/70 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative border border-gray-100">
+            <button onclick="closeQuizModal()" class="absolute top-5 right-5 text-gray-400 hover:text-gray-700 text-xl w-9 h-9 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors">
+                &times;
+            </button>
+            
+            <div id="quiz-body">
+                <!-- Quiz Step 1: Question -->
+                <div id="quiz-step-q">
+                    <div class="flex items-center justify-between mb-4">
+                        <span id="quiz-progress" class="text-xs font-bold text-brick-700 bg-brick-50 px-3 py-1 rounded-full">問題 1 / 3</span>
+                        <span class="text-xs text-gray-400 font-mono">Zeelandia Quiz</span>
+                    </div>
+                    <h3 id="quiz-question" class="font-serif text-xl font-bold text-gray-900 mb-6 leading-snug">
+                        荷蘭人在17世紀興建熱蘭遮城時，主要使用的城牆黏合材料「三合土」包含以下何者？
+                    </h3>
+                    <div id="quiz-options" class="space-y-3 mb-6">
+                        <!-- Dynamic Options Buttons -->
+                    </div>
+                </div>
+
+                <!-- Quiz Step 2: Result -->
+                <div id="quiz-step-r" class="hidden text-center py-4">
+                    <div class="w-20 h-20 bg-brick-100 text-brick-700 text-4xl rounded-full flex items-center justify-center mx-auto mb-4 shadow-inner">
+                        🏆
+                    </div>
+                    <h3 class="font-serif text-2xl font-bold text-gray-900 mb-2">測驗完成！</h3>
+                    <p id="quiz-score-text" class="text-gray-600 mb-4">你在 3 題中答對了 3 題</p>
+                    <div id="quiz-title-badge" class="inline-block bg-brick-500 text-white font-serif font-bold text-lg px-6 py-2 rounded-full mb-6 shadow-lg">
+                        熱蘭遮城大歷史學家
+                    </div>
+                    <p id="quiz-feedback" class="text-sm text-gray-500 mb-6">
+                        太棒了！你對安平古堡這座四百年城堡的歷史與構造瞭若指掌！
+                    </p>
+                    <button onclick="closeQuizModal()" class="px-8 py-3 bg-gray-900 hover:bg-black text-white font-bold rounded-xl text-sm transition-all shadow-lg">
+                        關閉視窗
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-950 text-gray-400 py-12 border-t border-gray-800 mt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center sm:text-left flex flex-col sm:flex-row justify-between items-center gap-6">
+            <div>
+                <div class="font-serif text-white font-bold text-xl mb-1">安平古堡歷史探索專題網</div>
+                <p class="text-xs text-gray-500">穿越四百年，看見臺灣與世界交會的第一步。</p>
+            </div>
+            <div class="text-xs text-gray-500 font-mono">
+                &copy; 1624–2026 安平古堡歷史數位企劃研製.
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Global State Management
+        let currentTab = 'home';
+
+        // Anime.js Exhibition Opening Animation Sequence
+        function runExhibitionIntroAnimation() {
+            // Sequential exhibition timeline opening sequence
+            const timeline = anime.timeline({
+                easing: 'easeOutCubic',
+                duration: 1000
+            });
+
+            timeline
+            // 1. Gently reveal and float the 17th century Dutch Map from top-left
+            .add({
+                targets: '.exhibition-map',
+                opacity: [0, 0.85],
+                translateY: [40, 0],
+                rotate: [-6, -4],
+                duration: 1200,
+                delay: 200
+            })
+            // 2. Reveal and float the Vintage Fort Photograph from bottom-right
+            .add({
+                targets: '.exhibition-photo',
+                opacity: [0, 0.9],
+                translateY: [40, 0],
+                rotate: [8, 5],
+                duration: 1200
+            }, '-=800')
+            // 3. Fade in the exhibition badge
+            .add({
+                targets: '.exhibition-badge',
+                opacity: [0, 1],
+                translateY: [20, 0],
+                duration: 800
+            }, '-=800')
+            // 4. Reveal the exhibition title with a smooth scale-up effect
+            .add({
+                targets: '.exhibition-title',
+                opacity: [0, 1],
+                translateY: [30, 0],
+                scale: [0.97, 1],
+                duration: 1000
+            }, '-=600')
+            // 5. Fade in the introductory description
+            .add({
+                targets: '.exhibition-subtitle',
+                opacity: [0, 1],
+                translateY: [20, 0],
+                duration: 800
+            }, '-=600')
+            // 6. Reveal CTA action buttons
+            .add({
+                targets: '.exhibition-actions',
+                opacity: [0, 1],
+                translateY: [20, 0],
+                duration: 800
+            }, '-=600');
+        }
+
+        // Tab Switching Logic
+        function switchTab(tabId) {
+            currentTab = tabId;
+            document.querySelectorAll('.tab-section').forEach(sec => sec.classList.add('hidden'));
+            const activeSec = document.getElementById(`sec-${tabId}`);
+            if (activeSec) activeSec.classList.remove('hidden');
+
+            // Update Nav Buttons Styling
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-white', 'bg-brick-500', 'shadow-md');
+                btn.classList.add('text-gray-300');
+            });
+            const activeNav = document.getElementById(`nav-${tabId}`);
+            if (activeNav) {
+                activeNav.classList.add('text-white', 'bg-brick-500', 'shadow-md');
+                activeNav.classList.remove('text-gray-300');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function scrollToSection(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Before & After Image Comparison Slider Logic
+        function updateComparison(val) {
+            const wrap = document.getElementById('before-image-wrap');
+            const line = document.getElementById('slider-line');
+            if (wrap && line) {
+                wrap.style.width = `${val}%`;
+                line.style.left = `${val}%`;
+            }
+        }
+
+        // Timeline Data & Interactive Accordion Logic
+        const timelineData = [
+            {
+                year: '1624年',
+                title: '荷蘭建城（大航海時代）',
+                tag: '荷治時期',
+                desc: '荷蘭東印度公司（VOC）離開澎湖轉進臺灣，於大員（今安平）興建「熱蘭遮城」（Fort Zeelandia），作為遠東地區貿易、轉運與防禦的核心樞紐。'
+            },
+            {
+                year: '1662年',
+                title: '明鄭收復（王城時代）',
+                tag: '明鄭時期',
+                desc: '鄭成功率軍圍攻攻下熱蘭遮城，結束荷蘭在臺38年統治。鄭氏將此處改名為「安平城」或「王城」，作為鄭氏家族之居所與政治要地。'
+            },
+            {
+                year: '1683年',
+                title: '清領時期（荒廢與拆毀）',
+                tag: '清領時期',
+                desc: '清朝治理臺灣後，政治中心移往府城（今臺南市區）。熱蘭遮城防禦重要性降低，逐漸荒廢，許多城牆紅磚甚至被拆去建造億載金城（二鯤鯓砲台）。'
+            },
+            {
+                year: '1896年',
+                title: '日治改造（現代樣貌奠基）',
+                tag: '日治時期',
+                desc: '日治時期平整城址磚瓦，於平台上建造洋樓風格的海關宿舍與官舍，並進行植樹綠化，奠定現代公園環境的基礎。'
+            },
+            {
+                year: '1930年',
+                title: '臺灣文化三百年展覽',
+                tag: '日治時期',
+                desc: '日人為舉辦「臺灣文化三百年」紀念活動，將洋樓改建為展覽館，並設置瞭望台雛形以利遊客遠眺港灣。'
+            },
+            {
+                year: '1975年',
+                title: '瞭望台加蓋（當代地標）',
+                tag: '現代',
+                desc: '臺南市政府進行重修，為瞭望台加蓋紅色尖頂，並正式定名為「安平古堡」，成為今日大眾熟悉的臺南地標視覺景象。'
+            }
+        ];
+
+        function renderTimeline() {
+            const container = document.getElementById('timeline-container');
+            if (!container) return;
+
+            container.innerHTML = timelineData.map((item, index) => `
+                <div class="relative pl-6 sm:pl-8 group">
+                    <!-- Bullet Point Marker -->
+                    <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-white border-4 border-brick-500 group-hover:scale-125 transition-transform shadow"></div>
+                    
+                    <!-- Year Tag (Desktop absolute left) -->
+                    <span class="hidden sm:inline-block absolute -left-32 top-0 text-sm font-bold font-serif text-brick-700 bg-brick-50 px-3 py-1 rounded-full border border-brick-200">
+                        ${item.year}
+                    </span>
+
+                    <div class="bg-white rounded-2xl p-6 shadow-md border border-gray-100 hover:shadow-xl transition-all">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="sm:hidden text-xs font-bold font-serif text-brick-700 bg-brick-50 px-2.5 py-0.5 rounded-full border border-brick-200">
+                                ${item.year}
+                            </span>
+                            <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800">
+                                ${item.tag}
+                            </span>
+                        </div>
+                        <h3 class="font-serif text-xl font-bold text-gray-900 mb-2">${item.title}</h3>
+                        <p class="text-gray-600 text-sm leading-relaxed">${item.desc}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Map Spot Selection Logic
+        const spotsData = [
+            {
+                badge: "國定古蹟",
+                title: "臺灣城殘壁（外城南牆殘壁）",
+                desc: "這是真正由荷蘭人在17世紀興建並保留至今的古堡遺跡。城牆採用糯米糖漿、牡蠣殼灰、糯米汁與紅磚砌成（俗稱糯米橋工法）。城牆上老榕樹根盤根錯節，呈現古樸強韌的歷史滄桑感。",
+                hl1: "荷蘭紅磚 (Batu Batavia) 鋪砌",
+                hl2: "三合土：烏鬼灰 + 蚵灰 + 糯米糖漿"
+            },
+            {
+                badge: "現代地標",
+                title: "安平古堡瞭望台",
+                desc: "非荷治時期建築，而是日治時期與1975年臺南市政府重新修繕後的建築。加蓋紅色尖頂後，成為俯瞰安平港與台江內海遺跡的最著名視野點。",
+                hl1: "高聳瞭望視野，遠眺安平港",
+                hl2: "1975年修繕成現今尖頂洋樓地標風格"
+            },
+            {
+                badge: "展覽場館",
+                title: "熱蘭遮城博物館",
+                desc: "前身為日治時期稅務司公館。館內展出熱蘭遮城遺址出土的陶瓷、荷蘭東印度公司（VOC）徽章文物、古地圖與復原模型。",
+                hl1: "展示VOC時代出土文物與陶器",
+                hl2: "豐富歷史模型還原當時生活"
+            },
+            {
+                badge: "歷史防禦體系",
+                title: "熱蘭遮城內城 (Inner Fort)",
+                desc: "方形堡壘結構，擁有三層防禦設施與四角凸出的稜堡（Bastion），方便安置火砲無死角交叉射擊，為典型大航海時代歐洲稜堡樣式。",
+                hl1: "四角菱形稜堡（稜堡式要塞）",
+                hl2: "具備長槍與火炮防守交叉火網"
+            },
+            {
+                badge: "生活與商業區",
+                title: "熱蘭遮城外城 (Outer Fort)",
+                desc: "包含荷蘭東印度公司商館、市政廳、長官官邸、教堂與醫院，為當時熱蘭遮城行政與貿易運作的心臟地帶。",
+                hl1: "設有商業倉庫與稅務商館",
+                hl2: "當時台灣最早的歐式市鎮雛形"
+            }
+        ];
+
+        function setMapTab(mode) {
+            const modernView = document.getElementById('map-view-modern');
+            const historicView = document.getElementById('map-view-historic');
+            const btnModern = document.getElementById('btn-map-modern');
+            const btnHistoric = document.getElementById('btn-map-historic');
+
+            if (mode === 'modern') {
+                modernView.classList.remove('hidden');
+                historicView.classList.add('hidden');
+                btnModern.className = "px-6 py-3 rounded-xl text-sm font-bold transition-all bg-brick-700 text-white shadow";
+                btnHistoric.className = "px-6 py-3 rounded-xl text-sm font-bold transition-all text-gray-600 hover:text-brick-700";
+                selectSpot(0);
+            } else {
+                modernView.classList.add('hidden');
+                historicView.classList.remove('hidden');
+                btnHistoric.className = "px-6 py-3 rounded-xl text-sm font-bold transition-all bg-brick-700 text-white shadow";
+                btnModern.className = "px-6 py-3 rounded-xl text-sm font-bold transition-all text-gray-600 hover:text-brick-700";
+                selectSpot(3);
+            }
+        }
+
+        function selectSpot(index) {
+            const data = spotsData[index];
+            if (!data) return;
+
+            document.getElementById('spot-badge').innerText = data.badge;
+            document.getElementById('spot-title').innerText = data.title;
+            document.getElementById('spot-desc').innerText = data.desc;
+            document.getElementById('spot-highlight-1').innerText = data.hl1;
+            document.getElementById('spot-highlight-2').innerText = data.hl2;
+        }
+
+        // Figures Section Data & Rendering
+        const figuresData = [
+            {
+                name: "宋克 (Martinus Sonck)",
+                role: "首任臺灣長官（VOC）",
+                avatar: "👨‍⚖️",
+                period: "1624 – 1625",
+                desc: "主持熱蘭遮城的初期興建規劃，帶領荷蘭東印度公司團隊在大員築城，開啟荷蘭人在臺灣長達 38 年的殖民與貿易經營。"
+            },
+            {
+                name: "奎一 (Frederick Coyett)",
+                role: "末代荷蘭臺灣長官",
+                avatar: "⚔️",
+                period: "1656 – 1662",
+                desc: "堅守熱蘭遮城圍城戰近九個月，最終與鄭成功談判簽署締和條約離開臺灣。後撰寫《被遺誤的臺灣》（'t Verwaerloosde Formosa）記錄此段歷史。"
+            },
+            {
+                name: "鄭成功 (Koxinga)",
+                role: "延平郡王 / 明鄭開創者",
+                avatar: "👑",
+                period: "1661 – 1662",
+                desc: "1661 年率數百隻戰艦登陸，發動熱蘭遮城圍城戰，迫使荷軍撤離。將城堡改名為「安平城」或「王城」，作為居城並逝世於此。"
+            },
+            {
+                name: "日治考古學者與重修者",
+                role: "古蹟維護與轉型者",
+                avatar: "📜",
+                period: "20世紀初期",
+                desc: "將原本坍塌廢毀的王城殘蹟進行整地，植樹造園轉型為歷史公園，開啟近代熱蘭遮城考古調查與歷史史料之研究。"
+            }
+        ];
+
+        function renderFigures() {
+            const grid = document.getElementById('figures-grid');
+            if (!grid) return;
+
+            grid.innerHTML = figuresData.map(f => `
+                <div class="bg-white rounded-3xl p-7 shadow-lg border border-gray-100 hover:shadow-xl transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-14 h-14 rounded-2xl bg-brick-50 text-brick-700 text-3xl flex items-center justify-center shadow-inner">
+                                ${f.avatar}
+                            </div>
+                            <div>
+                                <h3 class="font-serif text-lg font-bold text-gray-900">${f.name}</h3>
+                                <span class="text-xs font-semibold text-brick-700">${f.role}</span>
+                            </div>
+                        </div>
+                        <span class="inline-block px-3 py-1 bg-gray-100 text-gray-600 text-xs rounded-full mb-3 font-mono">
+                            ⏱️ 時期：${f.period}
+                        </span>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                            ${f.desc}
+                        </p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Stories Section Logic
+        const storiesData = [
+            {
+                title: "九個月的對決——熱蘭遮城圍城戰",
+                subtitle: "1661-1662 鄭荷世紀之戰細節還原",
+                content: `
+                    <p class="mb-4">1661年4月，鄭成功率領數百艘戰艦、二萬五千名大軍穿過鹿耳門水道登陸大員，迅速包圍普羅民遮城（今赤崁樓），隨後將主力目標鎖定堅固的熱蘭遮城。</p>
+                    <p class="mb-4">熱蘭遮城由荷蘭末代長官奎一堅守，城堡配備有完善的火砲視角與三層堡壘結構。鄭軍初期幾波猛烈衝鋒皆遭到強烈火砲回擊，遂轉為長期封鎖與斷絕糧源策略。</p>
+                    <p class="mb-4">圍城長達近九個月，雙方皆面臨糧食匱乏與傳染病考驗。直至1662年1月，鄭軍成功占領城堡旁關鍵高地「烏特勒支堡」（今安平小丘），得以居高臨下砲擊內城。奎一深知大勢已去，最終協議簽署締和條約，和平交出城堡離臺。</p>
+                `
+            },
+            {
+                title: "傳說中的「地下秘密通道」考證",
+                subtitle: "安平古堡真有通道直通赤崁樓嗎？",
+                content: `
+                    <p class="mb-4">臺南民間長期流傳著一個迷人的傳說：安平古堡與赤崁樓（普羅民遮城）之間，築有一條穿過海底的地下秘密通道，供當時荷蘭軍隊緊急撤退或傳遞軍情。</p>
+                    <p class="mb-4"><strong>歷史與地理事實考證：</strong></p>
+                    <ul class="list-disc pl-5 mb-4 space-y-2">
+                        <li>在 17 世紀荷治時期，熱蘭遮城（安平）與普羅民遮城（赤崁）中間隔著廣闊的<strong>「台江內海」</strong>，兩地距離數公里且水深可通航大船。</li>
+                        <li>以 17 世紀的建築工程技術，根本無法在海底開鑿長達數公里的防水地下隧道。</li>
+                    </ul>
+                    <p class="mb-4">歷史學家研判，傳說中的「地下道」實際上是熱蘭遮城內城與外城之間、或是堡壘軍火庫與地下防禦走廊的地下結構，經後人口耳相傳與誇大，才演變成直通赤崁樓的神祕傳說。</p>
+                `
+            },
+            {
+                title: "紅磚與糯米——大航海時代建築智慧",
+                subtitle: "結合歐洲設計與臺灣在地材料的工法",
+                content: `
+                    <p class="mb-4">安平古堡現存的「臺灣城殘壁」歷經四百年風雨仍屹立不搖，其秘密在於大航海時代荷蘭人適應本土材料的特殊建築工法。</p>
+                    <p class="mb-4"><strong>紅磚來源：</strong> 築城所用的紅磚部分由荷蘭東印度公司船隻從巴達維亞（今雅加達）作為船艙壓艙石運來（俗稱 Batu Batavia），部分則由在地燒製，質地十分堅硬。</p>
+                    <p class="mb-4"><strong>三合土黏合劑：</strong> 當年沒有現代水泥，荷蘭人利用臺灣在地資源，調配出著名的三合土黏合劑：將<strong>糯米糖漿、牡蠣殼灰（蚵灰）、烏鬼灰（植物灰）與砂石</strong>混合。這種黏合劑乾涸後異常堅固，展現了強大的建築耐候性。</p>
+                `
+            },
+            {
+                title: "安平追想曲與老榕樹下的歷史記憶",
+                subtitle: "民間文學、民謠與土地的情感連結",
+                content: `
+                    <p class="mb-4">安平古堡不僅是冷冰冰的歷史堡壘，更承載著豐富的臺灣大眾記憶與文學情感。</p>
+                    <p class="mb-4">著名的臺灣民謠《安平追想曲》敘述了一段異國情緣與思念的故事，歌詞中異國船隻與港灣的意象，正反映了安平作為大航海時代港口城市的獨特文化背景。</p>
+                    <p class="mb-4">如今走訪古堡殘壁，巨大的老榕樹根盤繞在四百年的荷蘭紅磚之上，樹影婆娑。這座殘壁與榕樹交織的畫面，成為了許多文學家、畫家與造訪者心中最深刻的古堡印記。</p>
+                `
+            }
+        ];
+
+        function showStory(index) {
+            const data = storiesData[index];
+            if (!data) return;
+
+            // Highlight Active Story Button
+            document.querySelectorAll('.story-nav-btn').forEach((btn, i) => {
+                if (i === index) {
+                    btn.className = "story-nav-btn w-full text-left p-4 rounded-2xl border border-brick-500 bg-brick-50 text-brick-900 font-bold flex items-center gap-3 transition-all shadow-sm";
+                } else {
+                    btn.className = "story-nav-btn w-full text-left p-4 rounded-2xl border border-gray-200 hover:border-brick-300 text-gray-700 font-semibold flex items-center gap-3 transition-all";
+                }
+            });
+
+            // Update Content Area
+            const area = document.getElementById('story-content-area');
+            area.innerHTML = `
+                <span class="text-xs font-bold text-brick-700 bg-brick-100 px-3.5 py-1 rounded-full inline-block mb-3 font-mono">HISTORIC TALE ${index + 1}</span>
+                <h3 class="font-serif text-2xl sm:text-3xl font-bold text-gray-900 mb-2">${data.title}</h3>
+                <h4 class="text-sm font-semibold text-amber-800 mb-6 pb-4 border-b border-gray-100">${data.subtitle}</h4>
+                <div class="text-gray-700 leading-relaxed text-base">
+                    ${data.content}
+                </div>
+            `;
+        }
+
+        // Quiz Interactive Logic
+        const quizQuestions = [
+            {
+                q: "17世紀荷蘭人在築城時，城牆黏合材料「三合土」包含以下何者？",
+                options: ["現代波特蘭水泥", "糯米糖漿與蚵灰", "瀝青與石膏", "鋼筋與泥漿"],
+                answer: 1
+            },
+            {
+                q: "1662年率軍攻下熱蘭遮城，並將其改名為「王城」的歷史人物是？",
+                options: ["施琅", "鄭成功", "丘逢甲", "沈葆楨"],
+                answer: 1
+            },
+            {
+                q: "關於傳說中「安平古堡直通赤崁樓地下通道」，歷史考證結果為何？",
+                options: ["真實存在且目前仍可通行", "歷史上因地震坍塌", "為傳說，當時中間隔著台江內海無法修建", "日治時期被日軍拆除"],
+                answer: 2
+            }
+        ];
+
+        let quizIndex = 0;
+        let quizScore = 0;
+
+        function openQuizModal() {
+            quizIndex = 0;
+            quizScore = 0;
+            document.getElementById('quiz-step-q').classList.remove('hidden');
+            document.getElementById('quiz-step-r').classList.add('hidden');
+            document.getElementById('quiz-modal').classList.remove('hidden');
+            renderQuizQuestion();
+        }
+
+        function closeQuizModal() {
+            document.getElementById('quiz-modal').classList.add('hidden');
+        }
+
+        function renderQuizQuestion() {
+            const qData = quizQuestions[quizIndex];
+            document.getElementById('quiz-progress').innerText = `問題 ${quizIndex + 1} / ${quizQuestions.length}`;
+            document.getElementById('quiz-question').innerText = qData.q;
+
+            const optsBox = document.getElementById('quiz-options');
+            optsBox.innerHTML = qData.options.map((opt, i) => `
+                <button onclick="answerQuiz(${i})" class="w-full text-left p-4 rounded-xl border border-gray-200 hover:border-brick-500 hover:bg-brick-50 text-gray-800 text-sm font-medium transition-all flex items-center justify-between group">
+                    <span>${opt}</span>
+                    <i class="fa-regular fa-circle text-gray-300 group-hover:text-brick-500"></i>
+                </button>
+            `).join('');
+        }
+
+        function answerQuiz(optionIndex) {
+            if (optionIndex === quizQuestions[quizIndex].answer) {
+                quizScore++;
+            }
+
+            quizIndex++;
+            if (quizIndex < quizQuestions.length) {
+                renderQuizQuestion();
+            } else {
+                showQuizResult();
+            }
+        }
+
+        function showQuizResult() {
+            document.getElementById('quiz-step-q').classList.add('hidden');
+            document.getElementById('quiz-step-r').classList.remove('hidden');
+            document.getElementById('quiz-score-text').innerText = `你在 ${quizQuestions.length} 題中答對了 ${quizScore} 題`;
+
+            const badge = document.getElementById('quiz-title-badge');
+            const feedback = document.getElementById('quiz-feedback');
+
+            if (quizScore === 3) {
+                badge.innerText = "🏆 熱蘭遮城大歷史學家";
+                feedback.innerText = "太厲害了！你對安平古堡這座四百年城堡的歷史、構造與傳說都瞭若指掌！";
+            } else if (quizScore >= 1) {
+                badge.innerText = "🔍 古堡歷史探索者";
+                feedback.innerText = "表現不錯！對熱蘭遮城有相當程度的了解，再多閱讀探索單元就能全對囉！";
+            } else {
+                badge.innerText = "🌱 初階歷史漫步者";
+                feedback.innerText = "別灰心！隨時點擊選單中的「年代」與「地圖」重新探索古堡的迷人史詩！";
+            }
+        }
+
+        // Window Onload Initialization
+        window.onload = function() {
+            renderTimeline();
+            renderFigures();
+            showStory(0);
+            selectSpot(0);
+            // Trigger Anime.js Exhibition Opening Sequence
+            runExhibitionIntroAnimation();
+        }
+    </script>
+</body>
+</html>
